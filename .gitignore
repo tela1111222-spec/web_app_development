@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# 虛擬環境
+venv/
+.venv/
+env/
+
+# SQLite 資料庫（實例資料）
+instance/
+
+# 環境設定
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
