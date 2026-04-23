@@ -1,0 +1,118 @@
+/*
+ * style.css — 任務管理系統全站樣式
+ *
+ * 包含：響應式排版、到期顏色標示、完成狀態樣式
+ */
+
+/* ===== 全域設定 ===== */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+}
+
+main {
+    flex: 1;
+}
+
+/* ===== 導覽列 ===== */
+.navbar-brand {
+    font-weight: 600;
+}
+
+/* ===== 任務列表 ===== */
+.list-group-item {
+    border-left: 4px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f0f4ff;
+}
+
+/* 已完成任務的樣式 */
+.task-completed {
+    background-color: #f8f9fa;
+    border-left-color: #198754 !important;
+    opacity: 0.75;
+}
+
+.task-completed:hover {
+    opacity: 0.9;
+}
+
+/* 已過期任務（到期日已過）—— 紅色標示 */
+.task-overdue {
+    border-left-color: #dc3545 !important;
+    background-color: #fff5f5;
+}
+
+.task-overdue .due-date-label {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* 即將到期（3 天內）—— 橘色標示 */
+.task-due-soon {
+    border-left-color: #fd7e14 !important;
+    background-color: #fff8f0;
+}
+
+.task-due-soon .due-date-label {
+    color: #fd7e14;
+    font-weight: 600;
+}
+
+/* ===== 切換按鈕 ===== */
+.toggle-btn {
+    background: none !important;
+    line-height: 1;
+}
+
+.toggle-btn:hover i {
+    transform: scale(1.2);
+    transition: transform 0.15s ease;
+}
+
+/* ===== 篩選按鈕組 ===== */
+.btn-group .btn.active {
+    font-weight: 600;
+}
+
+/* ===== 表單頁面 ===== */
+.form-label {
+    font-weight: 500;
+}
+
+/* ===== 刪除按鈕在 btn-group 裡的圓角修正 ===== */
+.delete-form .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* ===== 空狀態 ===== */
+.text-center .bi-inbox {
+    opacity: 0.4;
+}
+
+/* ===== 頁尾 ===== */
+footer {
+    border-top: 1px solid #dee2e6;
+}
+
+/* ===== 響應式調整 ===== */
+@media (max-width: 576px) {
+    .list-group-item {
+        flex-direction: column;
+    }
+
+    .btn-group-sm .btn {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    h1.h3 {
+        font-size: 1.3rem;
+    }
+}

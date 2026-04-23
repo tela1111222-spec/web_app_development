@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}任務列表 — 任務管理系統{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-list-task me-2"></i>我的任務
+    </h1>
+    <a href="{{ url_for('tasks.create_form') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>新增任務
+    </a>
+</div>
+
+<!-- 篩選按鈕 -->
+<div class="btn-group mb-4" role="group" aria-label="任務篩選">
+    <a href="{{ url_for('tasks.index', filter='all') }}"
+       class="btn btn-outline-secondary {{ 'active' if current_filter == 'all' else '' }}">
+        全部
+    </a>
+    <a href="{{ url_for('tasks.index', filter='active') }}"
+       class="btn btn-outline-secondary {{ 'active' if current_filter == 'active' else '' }}">
+        <i class="bi bi-circle me-1"></i>未完成
+    </a>
+    <a href="{{ url_for('tasks.index', filter='completed') }}"
+       class="btn btn-outline-secondary {{ 'active' if current_filter == 'completed' else '' }}">
+        <i class="bi bi-check-circle me-1"></i>已完成
+    </a>
+</div>
+
+<!-- 任務列表 -->
+{% if tasks %}
+    <div class="list-group">
+        {% for t in tasks %}
+            <div class="list-group-item list-group-item-action d-flex align-items-start gap-3
+                        {{ 'task-completed' if t.is_completed else '' }}"
+                 id="task-{{ t.id }}">
+
+                <!-- 完成狀態切換 -->
+                <form action="{{ url_for('tasks.toggle_task', task_id=t.id) }}" method="POST" class="mt-1">
+                    <button type="submit" class="btn btn-sm p-0 border-0 toggle-btn"
+                            title="{{ '標記為未完成' if t.is_completed else '標記為已完成' }}">
+                        {% if t.is_completed %}
+                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                        {% else %}
+                            <i class="bi bi-circle text-secondary fs-5"></i>
+                        {% endif %}
+                    </button>
+                </form>
+
+                <!-- 任務內容 -->
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="mb-1 {{ 'text-decoration-line-through text-muted' if t.is_completed else '' }}">
+                            {{ t.title }}
+                        </h5>
+                        <!-- 操作按鈕 -->
+                        <div class="btn-group btn-group-sm ms-2">
+                            <a href="{{ url_for('tasks.edit_form', task_id=t.id) }}"
+                               class="btn btn-outline-primary btn-sm" title="編輯">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{{ url_for('tasks.delete_task', task_id=t.id) }}"
+                                  method="POST" class="d-inline delete-form">
+                                <button type="submit" class="btn btn-outline-danger btn-sm" title="刪除">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    {% if t.description %}
+                        <p class="mb-1 text-muted small">{{ t.description }}</p>
+                    {% endif %}
+
+                    <div class="d-flex gap-3 mt-1">
+                        {% if t.due_date %}
+                            <small class="due-date-label">
+                                <i class="bi bi-calendar-event me-1"></i>截止：{{ t.due_date }}
+                            </small>
+                        {% endif %}
+                        <small class="text-muted">
+                            <i class="bi bi-clock me-1"></i>建立：{{ t.created_at[:10] }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <p class="text-muted mt-3 small">
+        共 {{ tasks|length }} 項任務
+    </p>
+{% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+        <p class="text-muted mt-3">
+            {% if current_filter == 'active' %}
+                沒有未完成的任務，太棒了！
+            {% elif current_filter == 'completed' %}
+                還沒有已完成的任務。
+            {% else %}
+                還沒有任何任務，點擊上方按鈕新增一個吧！
+            {% endif %}
+        </p>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}新增任務 — 任務管理系統{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <h1 class="h3 mb-4">
+            <i class="bi bi-plus-circle me-2"></i>新增任務
+        </h1>
+
+        <!-- 錯誤訊息 -->
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+            </div>
+        {% endif %}
+
+        <form action="{{ url_for('tasks.create_task') }}" method="POST" novalidate>
+            <!-- 任務名稱（必填） -->
+            <div class="mb-3">
+                <label for="title" class="form-label">
+                    任務名稱 <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control {{ 'is-invalid' if error else '' }}"
+                       id="title" name="title"
+                       value="{{ form_data.title if form_data else '' }}"
+                       placeholder="例如：完成資料庫報告"
+                       required autofocus>
+                <div class="invalid-feedback">請輸入任務名稱</div>
+            </div>
+
+            <!-- 任務描述（選填） -->
+            <div class="mb-3">
+                <label for="description" class="form-label">任務描述</label>
+                <textarea class="form-control" id="description" name="description"
+                          rows="3"
+                          placeholder="補充說明任務細節（選填）">{{ form_data.description if form_data else '' }}</textarea>
+            </div>
+
+            <!-- 截止日期（選填） -->
+            <div class="mb-4">
+                <label for="due_date" class="form-label">截止日期</label>
+                <input type="date" class="form-control"
+                       id="due_date" name="due_date"
+                       value="{{ form_data.due_date if form_data else '' }}">
+                <div class="form-text">選填，設定任務的截止日期</div>
+            </div>
+
+            <!-- 按鈕 -->
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i>建立任務
+                </button>
+                <a href="{{ url_for('tasks.index') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-lg me-1"></i>取消
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
